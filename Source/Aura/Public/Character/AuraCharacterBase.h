@@ -18,4 +18,8 @@ public:
 	AAuraCharacterBase();
 	virtual void BeginPlay() override;
 	
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
+	
 };
