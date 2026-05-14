@@ -26,3 +26,6 @@ Build/
 *.opensdf
 *.opendb
 *.VC.db
+
+# Ignore auto-modified editor config
+Config/DefaultEditor.ini
