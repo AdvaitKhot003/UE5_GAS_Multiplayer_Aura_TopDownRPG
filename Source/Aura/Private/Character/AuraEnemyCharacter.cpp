@@ -4,10 +4,10 @@
 
 void AAuraEnemyCharacter::HighlightEnemy()
 {
-	
+	bIsHighlighted = true;
 }
 
 void AAuraEnemyCharacter::UnHighlightEnemy()
 {
-	
+	bIsHighlighted = false;
 }

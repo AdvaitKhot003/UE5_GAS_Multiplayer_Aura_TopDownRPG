@@ -5,6 +5,7 @@
 #include "EnhancedInput/AuraInputConfig.h"
 #include "EnhancedInput/AuraInputComponent.h"
 #include "AuraGameplayTags.h"
+#include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -35,6 +36,34 @@ void AAuraPlayerController::BeginPlay()
 	InputModeData.SetHideCursorDuringCapture(false);
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetInputMode(InputModeData);
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	
+	if (IsLocalController())
+	{
+		TraceUnderCursor();
+	}
+}
+
+void AAuraPlayerController::TraceUnderCursor()
+{
+	FHitResult CursorHitResult;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+	
+	LastHitResultActor = ThisHitResultActor;
+	ThisHitResultActor = nullptr;
+	
+	if (CursorHitResult.IsValidBlockingHit())
+	{
+		ThisHitResultActor = CursorHitResult.GetActor();
+	}
+	
+	if (LastHitResultActor == ThisHitResultActor) return;
+	if (LastHitResultActor) LastHitResultActor->UnHighlightEnemy();
+	if (ThisHitResultActor) ThisHitResultActor->HighlightEnemy();
 }
 
 void AAuraPlayerController::SetupInputComponent()
