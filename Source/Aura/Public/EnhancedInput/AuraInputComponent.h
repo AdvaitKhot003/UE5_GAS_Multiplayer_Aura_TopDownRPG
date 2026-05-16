@@ -31,7 +31,7 @@ template <class UserObject, typename CallbackFunction>
 void UAuraInputComponent::BindNativeInputAction(const UAuraInputConfig* InInputConfig, const FGameplayTag& InInputTag,
 	ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunction Function)
 {
-	checkf(InInputConfig, TEXT("InInputConfig is null on AuraInputComponent [%s]"), *GetNameSafe(this));
+	check(InInputConfig);
 	
 	if (UInputAction* InputAction = InInputConfig->FindNativeInputActionByTag(InInputTag))
 	{
@@ -43,7 +43,7 @@ template <class UserObject, typename CallbackFunction>
 void UAuraInputComponent::BindAbilityInputAction(const UAuraInputConfig* InInputConfig, UserObject* ContextObject,
 	CallbackFunction InputPressedFunction, CallbackFunction InputHeldFunction, CallbackFunction InputReleasedFunction)
 {
-	checkf(InInputConfig, TEXT("InInputConfig is null on AuraInputComponent [%s]"), *GetNameSafe(this));
+	check(InInputConfig);
 	
 	for (const FAuraInputActionConfig& Config : InInputConfig->AbilityInputActions)
 	{

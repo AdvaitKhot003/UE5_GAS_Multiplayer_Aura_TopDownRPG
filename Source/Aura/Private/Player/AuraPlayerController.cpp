@@ -18,14 +18,14 @@ void AAuraPlayerController::BeginPlay()
 
 	if (!IsLocalController()) return;
 
-	checkf(AuraInputConfig, TEXT("AuraInputConfig is null! Assign it in the Blueprint defaults."));
-	checkf(AuraInputConfig->InputMappingContext, TEXT("InputMappingContext is null on AuraInputConfig!"));
+	check(AuraInputConfig);
+	check(AuraInputConfig->InputMappingContext);
 
 	const ULocalPlayer* LocalPlayer = GetLocalPlayer();
-	checkf(LocalPlayer, TEXT("LocalPlayer is null — is this controller locally owned?"));
+	check(LocalPlayer);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
-	checkf(Subsystem, TEXT("EnhancedInputLocalPlayerSubsystem not found for LocalPlayer!"));
+	check(Subsystem);
 
 	Subsystem->AddMappingContext(AuraInputConfig->InputMappingContext, 0);
 	
@@ -70,9 +70,7 @@ void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	
-	UAuraInputComponent* AuraInputComponent = Cast<UAuraInputComponent>(InputComponent);
-	checkf(AuraInputComponent,
-		TEXT("AuraInputComponent is null! Set UAuraInputComponent as the Input Component class in Project Settings > Input."));
+	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 	
 	AuraInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::Input_Move, ETriggerEvent::Triggered,
 		this, &AAuraPlayerController::Move);
@@ -87,13 +85,13 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	APawn* ControlledPawn = GetPawn<APawn>();
 	if (!ControlledPawn) return;
 	
-	if (MovementVector.Y != 0.f)
+	if (!FMath::IsNearlyZero(MovementVector.Y))
 	{
 		const FVector ForwardDirection = YawRotation.RotateVector(FVector::ForwardVector);
 		ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
 	}
 	
-	if (MovementVector.X != 0.f)
+	if (!FMath::IsNearlyZero(MovementVector.X))
 	{
 		const FVector RightDirection = YawRotation.RotateVector(FVector::RightVector);
 		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
