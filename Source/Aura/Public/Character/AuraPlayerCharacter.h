@@ -18,6 +18,8 @@ class AURA_API AAuraPlayerCharacter : public AAuraCharacterBase
 	
 public:
 	AAuraPlayerCharacter();
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -25,4 +27,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
+	
+private:
+	void InitAbilityPlayerInfo();
 };
