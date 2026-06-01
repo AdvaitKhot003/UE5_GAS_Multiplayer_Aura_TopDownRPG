@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
-class USphereComponent;
+class UGameplayEffect;
 /**
  * 
  */
@@ -21,18 +21,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-	UFUNCTION()
-	virtual void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTargetActor(AActor* TargetActor, const TSubclassOf<UGameplayEffect> GameplayEffectClass);
 	
-private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AuraEffect", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UStaticMeshComponent> Mesh;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AuraEffect", meta = (AllowPrivateAccess = true))
-	TObjectPtr<USphereComponent> Sphere;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 };
