@@ -21,13 +21,23 @@ void AAuraEffectActor::ApplyEffectToTargetActor(AActor* TargetActor, const TSubc
 	UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (!TargetAsc) return;
 	
-	check(GameplayEffectClass);
-	
 	FGameplayEffectContextHandle EffectContext = TargetAsc->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
+	
+	check(GameplayEffectClass);
 	
 	const FGameplayEffectSpecHandle EffectSpec = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContext);
 	if (!EffectSpec.IsValid()) return;
 	
 	TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpec.Data.Get());
+}
+
+void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
+{
+	
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+	
 }
