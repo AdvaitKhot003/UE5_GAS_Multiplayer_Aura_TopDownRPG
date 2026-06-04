@@ -28,6 +28,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
 	
-private:
-	void InitAbilityPlayerInfo();
+	virtual void InitAbilityCharacterInfo() override;
 };

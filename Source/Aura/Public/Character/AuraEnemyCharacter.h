@@ -24,6 +24,6 @@ public:
 	virtual void UnHighlightEnemy() override;
 	/** Enemy Interface - End **/
 	
-private:
-	void InitAbilityEnemyInfo();
+protected:
+	virtual void InitAbilityCharacterInfo() override;
 };

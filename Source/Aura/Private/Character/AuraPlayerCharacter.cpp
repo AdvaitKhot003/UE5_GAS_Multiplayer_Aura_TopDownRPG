@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "UI/HUD/AuraHUD.h"
 
@@ -50,17 +51,17 @@ void AAuraPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	InitAbilityPlayerInfo(); /** Server **/
+	InitAbilityCharacterInfo(); /** Server **/
 }
 
 void AAuraPlayerCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 	
-	InitAbilityPlayerInfo(); /** Client **/
+	InitAbilityCharacterInfo(); /** Client **/
 }
 
-void AAuraPlayerCharacter::InitAbilityPlayerInfo()
+void AAuraPlayerCharacter::InitAbilityCharacterInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
@@ -68,6 +69,8 @@ void AAuraPlayerCharacter::InitAbilityPlayerInfo()
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityCharacterInfoSet();
+	
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 	
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))

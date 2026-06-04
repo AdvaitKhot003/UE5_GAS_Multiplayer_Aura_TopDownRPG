@@ -36,4 +36,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	TObjectPtr<UAttributeSet> AttributeSet;
+	
+	virtual void InitAbilityCharacterInfo();
 };
