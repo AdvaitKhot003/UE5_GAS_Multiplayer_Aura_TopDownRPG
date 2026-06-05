@@ -61,8 +61,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI|WidgetData")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 	
+	template<typename T>
+	T* FindDataTableRowByTag(const UDataTable* DataTable, const FGameplayTag& InMessageTag) const;
+	
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 };
+
+template <typename T>
+T* UOverlayWidgetController::FindDataTableRowByTag(const UDataTable* DataTable, const FGameplayTag& InMessageTag) const
+{
+	check(DataTable && InMessageTag.IsValid());
+	T* Row = DataTable->FindRow<T>(InMessageTag.GetTagName(), TEXT(""));
+	return Row;
+}
