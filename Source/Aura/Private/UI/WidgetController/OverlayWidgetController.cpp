@@ -31,15 +31,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 	
-	AuraAsc->EffectAssetTags.AddLambda([this](const FGameplayTagContainer& AssetTags)
+	AuraAsc->EffectAssetTagsDelegate.AddLambda([this](const FGameplayTagContainer& AssetTags)
 	{
 		for (const FGameplayTag& Tag : AssetTags)
 		{
-			FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(TEXT("Message"));
-			if (!Tag.MatchesTag(MessageTag)) continue;
+			if (!Tag.MatchesTag(FGameplayTag::RequestGameplayTag(TEXT("Message")))) continue;
 			
-			const FUIMessageWidgetRow* Row =
-				FindDataTableRowByTag<FUIMessageWidgetRow>(MessageWidgetDataTable, MessageTag);
+			if (const FUIMessageWidgetRow* Row = FindDataTableRowByTag<FUIMessageWidgetRow>(MessageWidgetDataTable, Tag))
+			{
+				MessageWidgetRowDelegate.Broadcast(*Row);
+			}
 		}
 	});
 }

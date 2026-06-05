@@ -12,5 +12,5 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 {
 	FGameplayTagContainer AssetTags;
 	EffectSpec.GetAllAssetTags(AssetTags);
-	EffectAssetTags.Broadcast(AssetTags);
+	EffectAssetTagsDelegate.Broadcast(AssetTags);
 }
