@@ -65,10 +65,10 @@ void AAuraPlayerCharacter::InitAbilityCharacterInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
-	check(AuraPlayerState->GetAbilitySystemComponent());
-	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
 	CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityCharacterInfoSet();
 	
 	AttributeSet = AuraPlayerState->GetAttributeSet();
@@ -80,4 +80,6 @@ void AAuraPlayerCharacter::InitAbilityCharacterInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	
+	InitPrimaryAttributes();
 }
