@@ -81,5 +81,5 @@ void AAuraPlayerCharacter::InitAbilityCharacterInfo()
 		}
 	}
 	
-	InitPrimaryAttributes();
+	InitDefaultAttributes();
 }

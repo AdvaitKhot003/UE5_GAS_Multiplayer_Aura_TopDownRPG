@@ -28,10 +28,10 @@ void AAuraCharacterBase::InitAbilityCharacterInfo()
 	
 }
 
-void AAuraCharacterBase::InitPrimaryAttributes()
+void AAuraCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level)
 {
 	if (!HasAuthority()) return;
-	check(DefaultPrimaryAttributes);
+	check(GameplayEffectClass);
 	
 	UAbilitySystemComponent* TargetAsc = GetAbilitySystemComponent();
 	check(TargetAsc);
@@ -40,9 +40,15 @@ void AAuraCharacterBase::InitPrimaryAttributes()
 	EffectContextHandle.AddSourceObject(this);
 	
 	const FGameplayEffectSpecHandle EffectSpecHandle =
-		TargetAsc->MakeOutgoingSpec(DefaultPrimaryAttributes, 1.f, EffectContextHandle);
+		TargetAsc->MakeOutgoingSpec(GameplayEffectClass, Level, EffectContextHandle);
 	
 	if (!EffectSpecHandle.IsValid()) return;
 	
 	TargetAsc->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), TargetAsc);
+}
+
+void AAuraCharacterBase::InitDefaultAttributes()
+{
+	ApplyEffectToSelf(DefaultPrimaryAttributes);
+	ApplyEffectToSelf(DefaultSecondaryAttributes);
 }
