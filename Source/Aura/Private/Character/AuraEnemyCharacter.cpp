@@ -4,6 +4,7 @@
 #include "Aura/Aura.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 AAuraEnemyCharacter::AAuraEnemyCharacter()
 {
@@ -28,6 +29,23 @@ void AAuraEnemyCharacter::InitAbilityCharacterInfo()
 	check(AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	CastChecked<UAuraAbilitySystemComponent>(GetAbilitySystemComponent())->AbilityCharacterInfoSet();
+}
+
+void AAuraEnemyCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AAuraEnemyCharacter, EnemyLevel);
+}
+
+void AAuraEnemyCharacter::OnRep_EnemyLevel(int32 OldEnemyLevel)
+{
+	
+}
+
+int32 AAuraEnemyCharacter::GetCharacterLevel() const
+{
+	return EnemyLevel;
 }
 
 void AAuraEnemyCharacter::HighlightEnemy()

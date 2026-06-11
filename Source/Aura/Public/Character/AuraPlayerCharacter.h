@@ -21,6 +21,10 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	
+	/** Combat Interface - Start **/
+	virtual int32 GetCharacterLevel() const override;
+	/** Combat Interface - End **/
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraBoom;
