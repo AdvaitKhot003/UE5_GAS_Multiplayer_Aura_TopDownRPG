@@ -8,21 +8,39 @@
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
+	FWidgetControllerParams WidgetControllerParams;
+	AAuraHUD* AuraHUD = nullptr;
+	if (!MakeWidgetControllerParams(WorldContextObject, WidgetControllerParams, AuraHUD)) return nullptr;
+	return AuraHUD->GetOverlayWidgetController(WidgetControllerParams);
+}
+
+UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WidgetControllerParams;
+	AAuraHUD* AuraHUD = nullptr;
+	if (!MakeWidgetControllerParams(WorldContextObject, WidgetControllerParams, AuraHUD)) return nullptr;
+	return AuraHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+}
+
+bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(
+	const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams, AAuraHUD*& OutAuraHUD)
+{
 	APlayerController* LocalPc = UGameplayStatics::GetPlayerController(WorldContextObject, 0);
-	if (!LocalPc) return nullptr;
-
-	AAuraPlayerState* AuraPs = LocalPc->GetPlayerState<AAuraPlayerState>();
-	if (!AuraPs) return nullptr;
-
-	UAbilitySystemComponent* Asc = AuraPs->GetAbilitySystemComponent();
-	check(Asc);
-
-	UAttributeSet* As = AuraPs->GetAttributeSet();
-	check(As);
+	if (!LocalPc) return false;
 	
-	AAuraHUD* AuraHUD = Cast<AAuraHUD>(LocalPc->GetHUD());
-	if (!AuraHUD) return nullptr;
-
-	const FWidgetControllerParams Params(LocalPc, AuraPs, Asc, As);
-	return AuraHUD->GetOverlayWidgetController(Params);
+	AAuraPlayerState* AuraPs = LocalPc->GetPlayerState<AAuraPlayerState>();
+	if (!AuraPs) return false;
+	
+	UAbilitySystemComponent* Asc = AuraPs->GetAbilitySystemComponent();
+	if (!Asc) return false;
+	
+	UAttributeSet* As = AuraPs->GetAttributeSet();
+	if (!As) return false;
+	
+	OutAuraHUD = Cast<AAuraHUD>(LocalPc->GetHUD());
+	if (!OutAuraHUD) return false;
+	
+	const FWidgetControllerParams WidgetControllerParams(LocalPc, AuraPs, Asc, As);
+	OutWidgetControllerParams = WidgetControllerParams;
+	return true;
 }
