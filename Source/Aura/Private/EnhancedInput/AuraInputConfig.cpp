@@ -4,11 +4,11 @@
 
 UInputAction* UAuraInputConfig::FindNativeInputActionByTag(const FGameplayTag& InInputTag, bool bLogNotFound) const
 {
-	for (const FAuraInputActionConfig& Config : NativeInputActions)
+	for (const FAuraInputActionConfig& InputActionConfig : NativeInputActions)
 	{
-		if (Config.IsValid() && Config.InputTag == InInputTag)
+		if (InputActionConfig.IsValid() && InputActionConfig.InputTag.MatchesTagExact(InInputTag))
 		{
-			return Config.InputAction;
+			return InputActionConfig.InputAction;
 		}
 	}
 	

@@ -15,28 +15,28 @@ struct FEffectProperties
 	FGameplayEffectContextHandle EffectContextHandle;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Source")
-	UAbilitySystemComponent* SourceAbilitySystemComponent = nullptr;
+	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Source")
-	AActor* SourceAvatarActor = nullptr;
+	TObjectPtr<AActor> SourceAvatarActor = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Source")
-	AController* SourceController = nullptr;
+	TObjectPtr<AController> SourceController = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Source")
-	ACharacter* SourceCharacter = nullptr;
+	TObjectPtr<ACharacter> SourceCharacter = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Target")
-	UAbilitySystemComponent* TargetAbilitySystemComponent = nullptr;
+	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Target")
-	AActor* TargetAvatarActor = nullptr;
+	TObjectPtr<AActor> TargetAvatarActor = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Target")
-	AController* TargetController = nullptr;
+	TObjectPtr<AController> TargetController = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EffectProperties|Target")
-	ACharacter* TargetCharacter = nullptr;
+	TObjectPtr<ACharacter> TargetCharacter = nullptr;
 };
 
 /**
