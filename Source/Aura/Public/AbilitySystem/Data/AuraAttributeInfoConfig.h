@@ -26,7 +26,7 @@ struct FAuraAttributeInfo
 	
 	bool IsValid() const
 	{
-		return AttributeTag.IsValid() && !AttributeName.IsEmpty();
+		return AttributeTag.IsValid() && !AttributeName.IsEmpty() && !AttributeDescription.IsEmpty();
 	}
 };
 
