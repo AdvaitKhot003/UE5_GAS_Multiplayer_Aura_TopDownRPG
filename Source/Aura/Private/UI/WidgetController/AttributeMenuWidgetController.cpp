@@ -10,7 +10,7 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	UAuraAttributeSet* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
 	check(AuraAttributeSet);
 	
-	for (auto& Pair : AuraAttributeSet->AttributeTagsToAttributes)
+	for (const auto& Pair : AuraAttributeSet->AttributeTagsToAttributes)
 	{
 		FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(Pair.Key);
 		if (!AttributeInfo.IsValid()) continue;
@@ -21,5 +21,19 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
+	check(AttributeInfoConfig);
+	UAuraAttributeSet* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
+	check(AuraAttributeSet);
 	
+	for (const auto& Pair : AuraAttributeSet->AttributeTagsToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Pair.Value()).AddLambda([this, Pair](const FOnAttributeChangeData& Data)
+			{
+				FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(Pair.Key);
+				AttributeInfo.AttributeValue = Data.NewValue;
+				AttributeInfoDelegate.Broadcast(AttributeInfo);
+			}
+		);
+	}
 }
