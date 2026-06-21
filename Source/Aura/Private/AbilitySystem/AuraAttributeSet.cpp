@@ -4,10 +4,31 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "AuraGameplayTags.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
+	/** Primary Attributes **/
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Primary_Strength, GetStrengthAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Primary_Intelligence, GetIntelligenceAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Primary_Resilience, GetResilienceAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Primary_Vigor, GetVigorAttribute);
 	
+	/** Secondary Attributes **/
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_Armor, GetArmorAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_ArmorPenetration, GetArmorPenetrationAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_BlockChance, GetBlockChanceAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_ManaRegeneration, GetManaRegenerationAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_MaxHealth, GetMaxHealthAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Secondary_MaxMana, GetMaxManaAttribute);
+	
+	/** Vital Attributes **/
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Vital_Health, GetHealthAttribute);
+	AttributeTagsToAttributes.Add(AuraGameplayTags::Attribute_Vital_Mana, GetManaAttribute);
 }
 
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

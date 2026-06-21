@@ -28,5 +28,5 @@ public:
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataAsset|AttributeInfo")
-	UAuraAttributeInfoConfig* AttributeInfoConfig;
+	TObjectPtr<UAuraAttributeInfoConfig> AttributeInfoConfig;
 };

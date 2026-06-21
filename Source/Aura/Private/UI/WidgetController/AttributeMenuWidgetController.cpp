@@ -3,17 +3,20 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AuraAttributeInfoConfig.h"
-#include "AuraGameplayTags.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	check(AttributeInfoConfig);
-	const UAuraAttributeSet* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
+	UAuraAttributeSet* AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
+	check(AuraAttributeSet);
 	
-	FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(AuraGameplayTags::Attribute_Primary_Strength);
-	if (!AttributeInfo.IsValid()) return;
-	AttributeInfo.AttributeValue = AuraAttributeSet->GetStrength();
-	AttributeInfoDelegate.Broadcast(AttributeInfo);
+	for (auto& Pair : AuraAttributeSet->AttributeTagsToAttributes)
+	{
+		FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(Pair.Key);
+		if (!AttributeInfo.IsValid()) continue;
+		AttributeInfo.AttributeValue = Pair.Value().GetNumericValue(AuraAttributeSet);
+		AttributeInfoDelegate.Broadcast(AttributeInfo);
+	}
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()

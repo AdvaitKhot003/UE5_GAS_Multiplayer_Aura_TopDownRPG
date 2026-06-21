@@ -7,6 +7,10 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAttributeSet.generated.h"
 
+// DECLARE_DELEGATE_RetVal(FGameplayAttribute, FGameplayAttributeSignature);
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 USTRUCT(BlueprintType)
 struct FEffectProperties
 {
@@ -52,6 +56,12 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	
+	// TMap<FGameplayTag, FGameplayAttribute> AttributeTagsToAttributes;
+	// TMap<FGameplayTag, FGameplayAttributeSignature> AttributeTagsToAttributes;
+	// TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr or FGameplayAttribute(*)()
+	// TMap<FGameplayTag, FGameplayAttribute(*)()> AttributeTagsToAttributes;
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> AttributeTagsToAttributes;
 	
 	/** Primary Attributes **/
 	
