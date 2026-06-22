@@ -29,11 +29,10 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			Pair.Value()).AddLambda([this, Pair](const FOnAttributeChangeData& Data)
-			{
-				FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(Pair.Key);
-				AttributeInfo.AttributeValue = Data.NewValue;
-				AttributeInfoDelegate.Broadcast(AttributeInfo);
-			}
-		);
+		{
+			FAuraAttributeInfo AttributeInfo = AttributeInfoConfig->FindAttributeInfoByTag(Pair.Key);
+			AttributeInfo.AttributeValue = Data.NewValue;
+			AttributeInfoDelegate.Broadcast(AttributeInfo);
+		});
 	}
 }

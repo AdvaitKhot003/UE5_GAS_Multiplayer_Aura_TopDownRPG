@@ -51,14 +51,17 @@ void AAuraPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	InitAbilityCharacterInfo(); /** Server **/
+	/** Server **/
+	InitAbilityCharacterInfo();
+	GrantCharacterStartUpAbilities();
 }
 
 void AAuraPlayerCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 	
-	InitAbilityCharacterInfo(); /** Client **/
+	/** Client **/
+	InitAbilityCharacterInfo();
 }
 
 void AAuraPlayerCharacter::InitAbilityCharacterInfo()

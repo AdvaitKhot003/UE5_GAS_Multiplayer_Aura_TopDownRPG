@@ -1,6 +1,7 @@
 // No Copyright.
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/Ability/AuraGameplayAbility.h"
 
 void UAuraAbilitySystemComponent::AbilityCharacterInfoSet()
 {
@@ -13,4 +14,15 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 	FGameplayTagContainer AssetTags;
 	EffectSpec.GetAllAssetTags(AssetTags);
 	EffectAssetTagsDelegate.Broadcast(AssetTags);
+}
+
+void UAuraAbilitySystemComponent::GrantCharacterStartUpAbilities(
+	const TArray<TSubclassOf<UAuraGameplayAbility>>& GameplayAbilities, float AbilityLevel)
+{
+	for (const TSubclassOf<UAuraGameplayAbility>& AbilityClass : GameplayAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec(AbilityClass);
+		AbilitySpec.Level = AbilityLevel;
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
 }
