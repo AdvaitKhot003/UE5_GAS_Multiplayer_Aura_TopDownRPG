@@ -46,4 +46,5 @@ public:
 	TArray<FAuraInputActionConfig> AbilityInputActions;
 	
 	UInputAction* FindNativeInputActionByTag(const FGameplayTag& InInputTag, bool bLogNotFound = false) const;
+	UInputAction* FindAbilityInputActionByTag(const FGameplayTag& InInputTag, bool bLogNotFound = false) const;
 };
