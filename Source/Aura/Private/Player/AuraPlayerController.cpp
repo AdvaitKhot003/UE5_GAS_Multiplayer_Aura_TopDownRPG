@@ -8,10 +8,13 @@
 #include "Interaction/EnemyInterface.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Components/SplineComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+	
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -118,13 +121,44 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::AbilityInputPressed(FGameplayTag InInputTag)
 {
-	// For now do nothing.
+	if (!InInputTag.MatchesTagExact(AuraGameplayTags::Input_LMB)) return;
+	
+	bIsTargeting = ThisHitResultActor ? true : false;
+	bIsAutoRunning = false;
 }
 
 void AAuraPlayerController::AbilityInputHeld(FGameplayTag InInputTag)
 {
-	if (!GetAuraAbilitySystemComponent()) return;
-	GetAuraAbilitySystemComponent()->OnAbilityInputHeld(InInputTag);
+	if (!InInputTag.MatchesTagExact(AuraGameplayTags::Input_LMB))
+	{
+		if (!GetAuraAbilitySystemComponent()) return;
+		GetAuraAbilitySystemComponent()->OnAbilityInputHeld(InInputTag);
+		return;
+	}
+	
+	if (bIsTargeting)
+	{
+		if (!GetAuraAbilitySystemComponent()) return;
+		GetAuraAbilitySystemComponent()->OnAbilityInputHeld(InInputTag);
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+		
+		FHitResult CursorHitResult;
+		GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+		
+		if (CursorHitResult.IsValidBlockingHit())
+		{
+			CachedDestination = CursorHitResult.ImpactPoint;
+		}
+		
+		if (APawn* ControlledPawn = GetPawn<APawn>())
+		{
+			const FVector Direction = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(Direction);
+		}
+	}
 }
 
 void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
