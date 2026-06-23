@@ -6,6 +6,8 @@
 #include "EnhancedInput/AuraInputComponent.h"
 #include "AuraGameplayTags.h"
 #include "Interaction/EnemyInterface.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -46,6 +48,19 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	{
 		TraceUnderCursor();
 	}
+}
+
+UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponent()
+{
+	if (!AuraAbilitySystemComponent)
+	{
+		// const AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
+		// AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent());
+		
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return AuraAbilitySystemComponent;
 }
 
 void AAuraPlayerController::TraceUnderCursor()
@@ -103,18 +118,17 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::AbilityInputPressed(FGameplayTag InInputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red,
-		FString::Printf(TEXT("Ability Input Pressed : %s"), *InInputTag.ToString()));
+	// For now do nothing.
 }
 
 void AAuraPlayerController::AbilityInputHeld(FGameplayTag InInputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Green,
-		FString::Printf(TEXT("Ability Input Held : %s"), *InInputTag.ToString()));
+	if (!GetAuraAbilitySystemComponent()) return;
+	GetAuraAbilitySystemComponent()->OnAbilityInputHeld(InInputTag);
 }
 
 void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 {
-	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Blue,
-		FString::Printf(TEXT("Ability Input Released : %s"), *InInputTag.ToString()));
+	if (!GetAuraAbilitySystemComponent()) return;
+	GetAuraAbilitySystemComponent()->OnAbilityInputReleased(InInputTag);
 }

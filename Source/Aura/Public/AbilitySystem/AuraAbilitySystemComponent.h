@@ -19,10 +19,15 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 	
 public:
 	void AbilityCharacterInfoSet();
+	
 	void GrantCharacterStartUpAbilities(const TArray<TSubclassOf<UAuraGameplayAbility>>& GameplayAbilities,
 		float AbilityLevel = 1.f);
 	
 	FEffectAssetTags EffectAssetTagsDelegate;
+	
+	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
+	void OnAbilityInputHeld(const FGameplayTag& InInputTag);
+	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
 	
 protected:
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,

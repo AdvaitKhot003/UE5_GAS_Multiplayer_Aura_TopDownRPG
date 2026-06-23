@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class IEnemyInterface;
 struct FInputActionValue;
 class UAuraInputConfig;
@@ -21,6 +22,8 @@ class AURA_API AAuraPlayerController : public APlayerController
 public:
 	AAuraPlayerController();
 	virtual void PlayerTick(float DeltaTime) override;
+	
+	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -39,4 +42,7 @@ private:
 	
 	TScriptInterface<IEnemyInterface> LastHitResultActor;
 	TScriptInterface<IEnemyInterface> ThisHitResultActor;
+	
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 };
