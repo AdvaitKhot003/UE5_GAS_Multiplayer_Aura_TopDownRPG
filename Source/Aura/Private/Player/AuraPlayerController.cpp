@@ -74,6 +74,9 @@ void AAuraPlayerController::SetupInputComponent()
 	
 	AuraInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::Input_Move, ETriggerEvent::Triggered,
 		this, &AAuraPlayerController::Move);
+	
+	AuraInputComponent->BindAbilityInputAction(AuraInputConfig, this, &ThisClass::AbilityInputPressed,
+		&ThisClass::AbilityInputHeld, &ThisClass::AbilityInputReleased);
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -96,4 +99,22 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 		const FVector RightDirection = YawRotation.RotateVector(FVector::RightVector);
 		ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
 	}
+}
+
+void AAuraPlayerController::AbilityInputPressed(FGameplayTag InInputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red,
+		FString::Printf(TEXT("Ability Input Pressed : %s"), *InInputTag.ToString()));
+}
+
+void AAuraPlayerController::AbilityInputHeld(FGameplayTag InInputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Green,
+		FString::Printf(TEXT("Ability Input Held : %s"), *InInputTag.ToString()));
+}
+
+void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Blue,
+		FString::Printf(TEXT("Ability Input Released : %s"), *InInputTag.ToString()));
 }
