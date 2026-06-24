@@ -42,6 +42,8 @@ private:
 	void TraceUnderCursor();
 	void AutoRun();
 	
+	FHitResult CursorHitResult;
+	
 	TScriptInterface<IEnemyInterface> LastHitResultActor;
 	TScriptInterface<IEnemyInterface> ThisHitResultActor;
 	

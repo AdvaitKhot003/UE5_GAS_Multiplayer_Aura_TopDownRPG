@@ -69,7 +69,6 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponen
 
 void AAuraPlayerController::TraceUnderCursor()
 {
-	FHitResult CursorHitResult;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 	
 	LastHitResultActor = ThisHitResultActor;
@@ -167,9 +166,6 @@ void AAuraPlayerController::AbilityInputHeld(FGameplayTag InInputTag)
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
 		
-		FHitResult CursorHitResult;
-		GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
-		
 		if (CursorHitResult.IsValidBlockingHit())
 		{
 			CachedDestination = CursorHitResult.ImpactPoint;
@@ -200,30 +196,29 @@ void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 	{
 		const APawn* ControlledPawn = GetPawn<APawn>();
 		if (!ControlledPawn) return;
-		
-		if (FollowTime <= ShortPressThreshold)
-		{
-			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
-				this, ControlledPawn->GetActorLocation(), CachedDestination))
-			{
-				Spline->ClearSplinePoints();
 
-				for (const FVector& PointLocation : NavPath->PathPoints)
-				{
-					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
-
-					DrawDebugSphere(
-						GetWorld(), PointLocation, 5.f, 8, FColor::Red, false, 5.f);
-				}
-				
-				if (NavPath->PathPoints.Num() > 0)
-				{
-					CachedDestination = NavPath->PathPoints.Last();
-				}
-				
-				bIsAutoRunning = true;
-			}
-		}
+		const bool bShortPress = FollowTime <= ShortPressThreshold;
 		FollowTime = 0.f;
+
+		if (!bShortPress) return;
+
+		UNavigationPath* NavigationPath = UNavigationSystemV1::FindPathToLocationSynchronously(
+			this, ControlledPawn->GetActorLocation(), CachedDestination);
+
+		if (!NavigationPath) return;
+
+		Spline->ClearSplinePoints();
+
+		for (const FVector& PointLocation : NavigationPath->PathPoints)
+		{
+			Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
+		}
+
+		if (NavigationPath->PathPoints.Num() > 0)
+		{
+			CachedDestination = NavigationPath->PathPoints.Last();
+		}
+
+		bIsAutoRunning = true;
 	}
 }
