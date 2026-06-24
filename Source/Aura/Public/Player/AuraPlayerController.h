@@ -40,6 +40,7 @@ private:
 	void AbilityInputReleased(FGameplayTag InInputTag);
 	
 	void TraceUnderCursor();
+	void AutoRun();
 	
 	TScriptInterface<IEnemyInterface> LastHitResultActor;
 	TScriptInterface<IEnemyInterface> ThisHitResultActor;

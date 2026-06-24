@@ -49,10 +49,9 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	
-	if (IsLocalController())
-	{
-		TraceUnderCursor();
-	}
+	if (!IsLocalController()) return;
+	TraceUnderCursor();
+	AutoRun();
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponent()
@@ -84,6 +83,27 @@ void AAuraPlayerController::TraceUnderCursor()
 	if (LastHitResultActor == ThisHitResultActor) return;
 	if (LastHitResultActor) LastHitResultActor->UnHighlightEnemy();
 	if (ThisHitResultActor) ThisHitResultActor->HighlightEnemy();
+}
+
+void AAuraPlayerController::AutoRun()
+{
+	if (!bIsAutoRunning) return;
+	
+	if (APawn* ControlledPawn = GetPawn<APawn>())
+	{
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(
+			ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		
+		const FVector DirectionOnSpline = Spline->FindDirectionClosestToWorldLocation(
+			LocationOnSpline, ESplineCoordinateSpace::World);
+		
+		ControlledPawn->AddMovementInput(DirectionOnSpline);
+		
+		if ((LocationOnSpline - CachedDestination).Length() <= AutoRunAcceptanceRadius)
+		{
+			bIsAutoRunning = false;
+		}
+	}
 }
 
 void AAuraPlayerController::SetupInputComponent()
@@ -195,6 +215,12 @@ void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 					DrawDebugSphere(
 						GetWorld(), PointLocation, 5.f, 8, FColor::Red, false, 5.f);
 				}
+				
+				if (NavPath->PathPoints.Num() > 0)
+				{
+					CachedDestination = NavPath->PathPoints.Last();
+				}
+				
 				bIsAutoRunning = true;
 			}
 		}
