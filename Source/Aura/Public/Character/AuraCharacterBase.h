@@ -30,9 +30,16 @@ public:
 	
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
+	/** Combat Interface - Start **/
+	virtual FVector GetCombatSocketLocation() const override;
+	/** Combat Interface - End **/
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName WeaponTipSocket;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
