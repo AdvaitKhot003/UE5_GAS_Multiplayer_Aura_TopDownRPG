@@ -173,6 +173,15 @@ namespace AuraGameplayTags
 		"Attribute tag for character's mana"
 	);
 	
+	/** Event Tags **/
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT
+	(
+		Event_Montage_FireBolt,
+		"Event.Montage.FireBolt", 
+		"Event tag for character's FireBolt Ability"
+	);
+	
 	/** Message Tags **/
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT

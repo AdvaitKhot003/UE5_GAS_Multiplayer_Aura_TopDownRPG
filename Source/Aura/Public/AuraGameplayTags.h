@@ -37,6 +37,9 @@ namespace AuraGameplayTags
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Vital_Health);
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Vital_Mana);
 	
+	/** Event Tags **/
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Montage_FireBolt);
+	
 	/** Message Tags **/
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Message_Potion_Health);
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Message_Potion_Mana);

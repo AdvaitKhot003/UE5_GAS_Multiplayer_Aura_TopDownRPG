@@ -44,7 +44,10 @@ private:
 	
 	FHitResult CursorHitResult;
 	
+	UPROPERTY()
 	TScriptInterface<IEnemyInterface> LastHitResultActor;
+	
+	UPROPERTY()
 	TScriptInterface<IEnemyInterface> ThisHitResultActor;
 	
 	UPROPERTY()

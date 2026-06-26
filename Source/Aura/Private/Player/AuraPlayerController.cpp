@@ -205,7 +205,7 @@ void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 		UNavigationPath* NavigationPath = UNavigationSystemV1::FindPathToLocationSynchronously(
 			this, ControlledPawn->GetActorLocation(), CachedDestination);
 
-		if (!NavigationPath) return;
+		if (!NavigationPath || NavigationPath->PathPoints.Num() == 0) return;
 
 		Spline->ClearSplinePoints();
 
@@ -214,11 +214,7 @@ void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 			Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
 		}
 
-		if (NavigationPath->PathPoints.Num() > 0)
-		{
-			CachedDestination = NavigationPath->PathPoints.Last();
-		}
-
+		CachedDestination = NavigationPath->PathPoints.Last();
 		bIsAutoRunning = true;
 	}
 }
