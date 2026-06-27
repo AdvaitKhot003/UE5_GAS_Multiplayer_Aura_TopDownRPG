@@ -27,5 +27,8 @@ public:
 	
 protected:
 	virtual void Activate() override;
+	
+private:
 	void SendTargetDataUnderCursor();
+	void OnTargetDataReplicated(const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag ActivationTag);
 };
