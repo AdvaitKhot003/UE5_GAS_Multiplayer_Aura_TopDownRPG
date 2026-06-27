@@ -6,7 +6,8 @@
 #include "Abilities/Tasks/AbilityTask.h"
 #include "TargetDataUnderCursor.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataUnderCursorSignature, const FVector&, TargetData);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetDataUnderCursorSignature,
+	const FGameplayAbilityTargetDataHandle&, DataHandle);
 
 /**
  * 
@@ -26,4 +27,5 @@ public:
 	
 protected:
 	virtual void Activate() override;
+	void SendTargetDataUnderCursor();
 };

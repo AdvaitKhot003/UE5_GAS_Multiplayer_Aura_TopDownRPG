@@ -1,6 +1,7 @@
 // No Copyright.
 
 #include "AbilitySystem/AbilityTask/TargetDataUnderCursor.h"
+#include "AbilitySystemComponent.h"
 
 UTargetDataUnderCursor* UTargetDataUnderCursor::GetTargetDataUnderCursor(UGameplayAbility* OwningAbility)
 {
@@ -10,17 +11,44 @@ UTargetDataUnderCursor* UTargetDataUnderCursor::GetTargetDataUnderCursor(UGamepl
 
 void UTargetDataUnderCursor::Activate()
 {
+	if (IsLocallyControlled())
+	{
+		SendTargetDataUnderCursor();
+	}
+	else
+	{
+		/** Server **/
+	}
+}
+
+void UTargetDataUnderCursor::SendTargetDataUnderCursor()
+{
 	const FGameplayAbilityActorInfo* ActorInfo = Ability->GetCurrentActorInfo();
 	if (!ActorInfo) return;
 
 	const APlayerController* PlayerController = ActorInfo->PlayerController.Get();
 	if (!PlayerController) return;
 	
-	FHitResult HitResult;
-	PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	FScopedPredictionWindow ScopedPredictionWindow(AbilitySystemComponent.Get());
 	
-	if (HitResult.IsValidBlockingHit())
+	FHitResult CursorHitResult;
+	PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+	
+	FGameplayAbilityTargetDataHandle TargetDataHandle;
+	FGameplayAbilityTargetData_SingleTargetHit* TargetData = new FGameplayAbilityTargetData_SingleTargetHit();
+	TargetData->HitResult = CursorHitResult;
+	TargetDataHandle.Add(TargetData);
+	
+	AbilitySystemComponent->ServerSetReplicatedTargetData(
+		GetAbilitySpecHandle(),
+		GetActivationPredictionKey(),
+		TargetDataHandle,
+		FGameplayTag(),
+		AbilitySystemComponent->ScopedPredictionKey
+	);
+	
+	if (ShouldBroadcastAbilityTaskDelegates())
 	{
-		OnValidTargetData.Broadcast(HitResult.ImpactPoint);
+		OnValidTargetData.Broadcast(TargetDataHandle);
 	}
 }
