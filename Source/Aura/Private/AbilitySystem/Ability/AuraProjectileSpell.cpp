@@ -21,14 +21,25 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 	FRotator ProjectileRotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	ProjectileRotation.Pitch  = 0.f;
-		
+	
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);
 	SpawnTransform.SetRotation(ProjectileRotation.Quaternion());
-		
+	
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform,
 		AvatarActor, Cast<APawn>(AvatarActor), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-		
+	
 	if (!Projectile) return;
 	Projectile->FinishSpawning(SpawnTransform);
+}
+
+void UAuraProjectileSpell::UpdateWarpTargetFromLocation(const FVector& TargetLocation)
+{
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	if (!AvatarActor) return;
+	
+	const ICombatInterface* CombatInterface = Cast<ICombatInterface>(AvatarActor);
+	if (!CombatInterface) return;
+	
+	CombatInterface->UpdateWarpTarget(TargetLocation);
 }

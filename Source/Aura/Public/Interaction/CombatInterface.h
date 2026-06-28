@@ -24,4 +24,5 @@ class AURA_API ICombatInterface
 public:
 	virtual int32 GetCharacterLevel() const;
 	virtual FVector GetCombatSocketLocation() const;
+	virtual void UpdateWarpTarget(const FVector& TargetLocation) const;
 };

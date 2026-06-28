@@ -24,4 +24,7 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Ability|Projectile")
 	void SpawnProjectile(const FVector& ProjectileTargetLocation);
+	
+	UFUNCTION(BlueprintCallable, Category = "Ability|Projectile")
+	void UpdateWarpTargetFromLocation(const FVector& TargetLocation);
 };

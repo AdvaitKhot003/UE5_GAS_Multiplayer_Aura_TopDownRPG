@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "MotionWarpingComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -15,6 +16,8 @@ AAuraCharacterBase::AAuraCharacterBase()
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
 	WeaponMesh->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarpingComponent");
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -32,6 +35,11 @@ FVector AAuraCharacterBase::GetCombatSocketLocation() const
 {
 	check(WeaponMesh);
 	return WeaponMesh->GetSocketLocation(WeaponTipSocket);
+}
+
+void AAuraCharacterBase::UpdateWarpTarget(const FVector& TargetLocation) const
+{
+	return GetMotionWarpingComponent()->AddOrUpdateWarpTargetFromLocation(FName("WarpTarget"), TargetLocation);
 }
 
 void AAuraCharacterBase::InitAbilityCharacterInfo()

@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UMotionWarpingComponent;
 class UAuraGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
@@ -29,14 +30,19 @@ public:
 	/** Ability System Interface - End **/
 	
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
 	
 	/** Combat Interface - Start **/
 	virtual FVector GetCombatSocketLocation() const override;
+	virtual void UpdateWarpTarget(const FVector& TargetLocation) const override;
 	/** Combat Interface - End **/
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	FName WeaponTipSocket;
