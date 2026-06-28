@@ -55,6 +55,13 @@ namespace AuraGameplayTags
 		"Input tag for 4 Key on keyboard"
 	);
 	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT
+	(
+		Input_Shift,
+		"Input.Shift",
+		"Input tag for Shift Key on keyboard"
+	);
+	
 	/** Primary Attribute Tags **/
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT

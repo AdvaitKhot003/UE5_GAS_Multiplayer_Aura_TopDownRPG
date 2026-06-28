@@ -114,6 +114,12 @@ void AAuraPlayerController::SetupInputComponent()
 	AuraInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::Input_Move, ETriggerEvent::Triggered,
 		this, &AAuraPlayerController::Move);
 	
+	AuraInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::Input_Shift, ETriggerEvent::Triggered,
+		this, &AAuraPlayerController::ShiftPressed);
+	
+	AuraInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::Input_Shift, ETriggerEvent::Completed,
+		this, &AAuraPlayerController::ShiftReleased);
+	
 	AuraInputComponent->BindAbilityInputAction(AuraInputConfig, this, &ThisClass::AbilityInputPressed,
 		&ThisClass::AbilityInputHeld, &ThisClass::AbilityInputReleased);
 }
@@ -144,7 +150,7 @@ void AAuraPlayerController::AbilityInputPressed(FGameplayTag InInputTag)
 {
 	if (!InInputTag.MatchesTagExact(AuraGameplayTags::Input_LMB)) return;
 	
-	bIsTargeting = ThisHitResultActor ? true : false;
+	bIsTargeting = bShiftKeyDown || ThisHitResultActor != nullptr;
 	bIsAutoRunning = false;
 }
 
@@ -187,6 +193,7 @@ void AAuraPlayerController::AbilityInputReleased(FGameplayTag InInputTag)
 		GetAuraAbilitySystemComponent()->OnAbilityInputReleased(InInputTag);
 		return;
 	}
+	
 	if (bIsTargeting)
 	{
 		if (!GetAuraAbilitySystemComponent()) return;

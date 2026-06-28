@@ -68,4 +68,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	TObjectPtr<USplineComponent> Spline;
+	
+	bool bShiftKeyDown = false;
+	
+	void ShiftPressed() { bShiftKeyDown = true; }
+	void ShiftReleased() { bShiftKeyDown = false; }
 };

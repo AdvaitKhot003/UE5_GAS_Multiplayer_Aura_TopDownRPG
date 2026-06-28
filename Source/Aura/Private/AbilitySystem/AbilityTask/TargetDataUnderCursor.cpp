@@ -46,6 +46,8 @@ void UTargetDataUnderCursor::SendTargetDataUnderCursor()
 	FHitResult CursorHitResult;
 	PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 	
+	if (!CursorHitResult.bBlockingHit) return;
+	
 	FGameplayAbilityTargetDataHandle TargetDataHandle;
 	FGameplayAbilityTargetData_SingleTargetHit* TargetData = new FGameplayAbilityTargetData_SingleTargetHit();
 	TargetData->HitResult = CursorHitResult;
