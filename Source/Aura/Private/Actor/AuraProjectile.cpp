@@ -3,6 +3,9 @@
 #include "Actor/AuraProjectile.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Components/AudioComponent.h"
 
 AAuraProjectile::AAuraProjectile()
 {
@@ -23,18 +26,72 @@ AAuraProjectile::AAuraProjectile()
 	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
 }
 
+void AAuraProjectile::Destroyed()
+{
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+	}
+	
+	if (!bIsHit && !HasAuthority())
+	{
+		if (ImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(),
+				FRotator::ZeroRotator);
+		}
+		
+		if (ImpactEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+		}
+	}
+	
+	Super::Destroyed();
+}
+
 void AAuraProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereBeginOverlap);
 	Sphere->OnComponentEndOverlap.AddDynamic(this, &AAuraProjectile::OnSphereEndOverlap);
+	SetLifeSpan(ProjectileLifeSpan);
+	
+	if (LaunchSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation(),
+			FRotator::ZeroRotator);
+	}
+	
+	if (LoopingSound)
+	{
+		LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+	}
 }
 
 void AAuraProjectile::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(),
+			FRotator::ZeroRotator);
+	}
 	
+	if (ImpactEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	}
+	
+	if (HasAuthority())
+	{
+		Destroy();
+	}
+	else
+	{
+		bIsHit = true;
+	}
 }
 
 void AAuraProjectile::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
