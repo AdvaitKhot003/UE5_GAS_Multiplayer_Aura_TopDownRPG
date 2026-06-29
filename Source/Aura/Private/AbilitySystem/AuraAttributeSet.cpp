@@ -169,6 +169,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		
+		UE_LOG(LogTemp, Warning,
+			TEXT("AvatarActorName: %s AvatarActorHealth: %f"),
+			*Props.TargetAvatarActor->GetActorNameOrLabel(), GetHealth());
 	}
 	
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())

@@ -3,6 +3,8 @@
 #include "AbilitySystem/Ability/AuraProjectileSpell.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -30,6 +32,21 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		AvatarActor, Cast<APawn>(AvatarActor), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	
 	if (!Projectile) return;
+	
+	const UAbilitySystemComponent* SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(AvatarActor);
+	if (!SourceAsc) return;
+	
+	FGameplayEffectContextHandle EffectContextHandle = SourceAsc->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+	
+	check(DamageEffectClass);
+	
+	const FGameplayEffectSpecHandle EffectSpecHandle = SourceAsc->MakeOutgoingSpec(
+		DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
+	
+	if (!EffectSpecHandle.IsValid()) return;
+	
+	Projectile->DamageEffectSpecHandle = EffectSpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);
 }
 
