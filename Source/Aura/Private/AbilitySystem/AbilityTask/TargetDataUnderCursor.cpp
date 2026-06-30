@@ -108,7 +108,8 @@ void UTargetDataUnderCursor::SendTargetDataUnderCursor()
 	}
 }
 
-void UTargetDataUnderCursor::OnTargetDataReplicated(const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag ActivationTag)
+void UTargetDataUnderCursor::OnTargetDataReplicated(
+	const FGameplayAbilityTargetDataHandle& TargetDataHandle, FGameplayTag ActivationTag)
 {
 	/*
 	 * The replicated target data has now been consumed.
