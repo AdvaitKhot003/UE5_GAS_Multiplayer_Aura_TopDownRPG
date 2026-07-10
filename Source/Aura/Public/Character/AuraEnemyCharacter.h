@@ -6,6 +6,7 @@
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "AbilitySystem/Data/CharacterClassInfoConfig.h"
 #include "AuraEnemyCharacter.generated.h"
 
 class UWidgetComponent;
@@ -39,6 +40,10 @@ public:
 	
 protected:
 	virtual void InitAbilityCharacterInfo() override;
+	virtual void InitDefaultAttributes() override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	ECharacterClass CharacterClass = ECharacterClass::Elementalist;
 	
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_EnemyLevel, BlueprintReadOnly, Category = "Combat")
 	int32 EnemyLevel = 1;

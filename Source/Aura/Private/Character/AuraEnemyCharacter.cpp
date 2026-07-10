@@ -7,6 +7,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Components/WidgetComponent.h"
 #include "UI/UserWidget/AuraUserWidget.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
 AAuraEnemyCharacter::AAuraEnemyCharacter()
 {
@@ -44,6 +45,12 @@ void AAuraEnemyCharacter::InitAbilityCharacterInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	CastChecked<UAuraAbilitySystemComponent>(GetAbilitySystemComponent())->AbilityCharacterInfoSet();
 	InitDefaultAttributes();
+}
+
+void AAuraEnemyCharacter::InitDefaultAttributes()
+{
+	UAuraAbilitySystemLibrary::InitDefaultAttributesByLevel(
+		this, CharacterClass, EnemyLevel, GetAbilitySystemComponent());
 }
 
 void AAuraEnemyCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

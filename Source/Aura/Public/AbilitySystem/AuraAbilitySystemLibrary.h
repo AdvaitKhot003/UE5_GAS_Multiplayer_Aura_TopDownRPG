@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Data/CharacterClassInfoConfig.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class UAbilitySystemComponent;
 class AAuraHUD;
 struct FWidgetControllerParams;
 class UAttributeMenuWidgetController;
@@ -24,6 +26,10 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
+	static void InitDefaultAttributesByLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass,
+		float Level, UAbilitySystemComponent* AbilitySystemComponent);
 	
 private:
 	static bool MakeWidgetControllerParams(
