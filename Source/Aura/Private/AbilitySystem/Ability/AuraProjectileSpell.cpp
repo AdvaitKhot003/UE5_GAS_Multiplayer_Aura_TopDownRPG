@@ -47,8 +47,10 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	
 	if (!EffectSpecHandle.IsValid()) return;
 	
+	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+	
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(
-		EffectSpecHandle, AuraGameplayTags::Attribute_Meta_Damage, DamageCaused);
+		EffectSpecHandle, AuraGameplayTags::Attribute_Meta_Damage, ScaledDamage);
 	
 	Projectile->DamageEffectSpecHandle = EffectSpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);

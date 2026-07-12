@@ -15,6 +15,9 @@ class AURA_API UAuraGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInput")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability|Input")
 	FGameplayTag StartUpAbilityInputTag;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability|Damage")
+	FScalableFloat Damage = 10.f;
 };
