@@ -31,4 +31,7 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Ability|Projectile")
 	void UpdateWarpTargetFromLocation(const FVector& TargetLocation);
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability|Projectile")
+	float DamageCaused = 10.f;
 };

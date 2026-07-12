@@ -180,6 +180,14 @@ namespace AuraGameplayTags
 		"Attribute tag for character's mana"
 	);
 	
+	/** Meta-Attribute Tags **/
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT
+	(
+		Attribute_Meta_Damage,
+		"Attribute.Meta.Damage",
+		"Attribute tag for damage inflicted by abilities"
+	);
+	
 	/** Event Tags **/
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT
