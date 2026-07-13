@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UAnimMontage;
 class UMotionWarpingComponent;
 class UAuraGameplayAbility;
 class UGameplayEffect;
@@ -35,6 +36,7 @@ public:
 	/** Combat Interface - Start **/
 	virtual FVector GetCombatSocketLocation() const override;
 	virtual void UpdateWarpTarget(const FVector& TargetLocation) const override;
+	virtual UAnimMontage* GetHitReactMontage_Implementation() const override;
 	/** Combat Interface - End **/
 	
 protected:
@@ -68,6 +70,9 @@ protected:
 	virtual void InitDefaultAttributes();
 	
 	void GrantCharacterStartUpAbilities();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameplayAbilities", meta = (AllowPrivateAccess = true))

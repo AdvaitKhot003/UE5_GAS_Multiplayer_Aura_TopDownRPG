@@ -38,6 +38,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 	
+	void HitReactTagChanged(const FGameplayTag HitReactTag, int32 TagCount);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bIsHitReacting = false;
+	
 protected:
 	virtual void InitAbilityCharacterInfo() override;
 	virtual void InitDefaultAttributes() override;
@@ -47,6 +52,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_EnemyLevel, BlueprintReadOnly, Category = "Combat")
 	int32 EnemyLevel = 1;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	float DefaultWalkSpeed = 250.f;
 	
 	UFUNCTION() void OnRep_EnemyLevel(int32 OldEnemyLevel);
 	

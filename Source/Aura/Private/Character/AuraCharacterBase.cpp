@@ -47,6 +47,11 @@ void AAuraCharacterBase::UpdateWarpTarget(const FVector& TargetLocation) const
 	return GetMotionWarpingComponent()->AddOrUpdateWarpTargetFromLocation(FName("WarpTarget"), TargetLocation);
 }
 
+UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation() const
+{
+	return HitReactMontage;
+}
+
 void AAuraCharacterBase::InitAbilityCharacterInfo()
 {
 	

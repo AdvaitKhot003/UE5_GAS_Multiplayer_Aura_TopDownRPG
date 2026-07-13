@@ -8,6 +8,8 @@
 #include "Components/WidgetComponent.h"
 #include "UI/UserWidget/AuraUserWidget.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AuraGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AAuraEnemyCharacter::AAuraEnemyCharacter()
 {
@@ -26,6 +28,8 @@ AAuraEnemyCharacter::AAuraEnemyCharacter()
 void AAuraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 	
 	InitAbilityCharacterInfo();
 	
@@ -87,6 +91,15 @@ void AAuraEnemyCharacter::BindHealthCallbacksToDependencies()
 	{
 		OnMaxHealthChanged.Broadcast(Data.NewValue);
 	});
+	
+	GetAbilitySystemComponent()->RegisterGameplayTagEvent(
+		AuraGameplayTags::Effect_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ThisClass::HitReactTagChanged);
+}
+
+void AAuraEnemyCharacter::HitReactTagChanged(const FGameplayTag HitReactTag, int32 TagCount)
+{
+	bIsHitReacting = TagCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bIsHitReacting ? 0.f : DefaultWalkSpeed;
 }
 
 int32 AAuraEnemyCharacter::GetCharacterLevel() const

@@ -41,6 +41,9 @@ namespace AuraGameplayTags
 	/** Meta-Attribute Tags **/
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Meta_Damage);
 	
+	/** Effect Tags **/
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effect_HitReact);
+	
 	/** Event Tags **/
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Montage_FireBolt);
 	
