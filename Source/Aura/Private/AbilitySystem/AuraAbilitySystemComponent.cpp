@@ -16,7 +16,7 @@ void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySys
 	EffectAssetTagsDelegate.Broadcast(AssetTags);
 }
 
-void UAuraAbilitySystemComponent::GrantCharacterStartUpAbilities(
+void UAuraAbilitySystemComponent::GiveCharacterStartUpAbilities(
 	const TArray<TSubclassOf<UAuraGameplayAbility>>& GameplayAbilities, float AbilityLevel)
 {
 	for (const TSubclassOf<UAuraGameplayAbility>& AbilityClass : GameplayAbilities)

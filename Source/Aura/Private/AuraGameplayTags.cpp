@@ -188,6 +188,14 @@ namespace AuraGameplayTags
 		"Attribute tag for damage inflicted by abilities"
 	);
 	
+	/** Ability Tags **/
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT
+	(
+		Ability_HitReact,
+		"Ability.HitReact",
+		"Ability tag granted when hit reacting"
+	);
+	
 	/** Effect Tags **/
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT

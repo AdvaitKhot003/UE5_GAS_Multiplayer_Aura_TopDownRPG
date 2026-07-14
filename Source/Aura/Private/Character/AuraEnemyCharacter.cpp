@@ -32,6 +32,7 @@ void AAuraEnemyCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 	
 	InitAbilityCharacterInfo();
+	UAuraAbilitySystemLibrary::GiveStartUpAbilities(this, GetAbilitySystemComponent());
 	
 	BindHealthCallbacksToDependencies();
 	

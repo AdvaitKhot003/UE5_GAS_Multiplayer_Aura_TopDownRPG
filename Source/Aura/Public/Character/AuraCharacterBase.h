@@ -69,7 +69,7 @@ protected:
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level = 1.f);
 	virtual void InitDefaultAttributes();
 	
-	void GrantCharacterStartUpAbilities();
+	void GiveCharacterStartUpAbilities();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;

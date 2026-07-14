@@ -31,6 +31,9 @@ public:
 	static void InitDefaultAttributesByLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass,
 		float Level, UAbilitySystemComponent* AbilitySystemComponent);
 	
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
+	static void GiveStartUpAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* AbilitySystemComponent);
+	
 private:
 	static bool MakeWidgetControllerParams(
 		const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams, AAuraHUD*& OutAuraHUD);

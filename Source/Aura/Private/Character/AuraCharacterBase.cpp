@@ -83,10 +83,10 @@ void AAuraCharacterBase::InitDefaultAttributes()
 	ApplyEffectToSelf(DefaultVitalAttributes);
 }
 
-void AAuraCharacterBase::GrantCharacterStartUpAbilities()
+void AAuraCharacterBase::GiveCharacterStartUpAbilities()
 {
 	if (!HasAuthority()) return;
 	
 	UAuraAbilitySystemComponent* AuraAsc = CastChecked<UAuraAbilitySystemComponent>(GetAbilitySystemComponent());
-	AuraAsc->GrantCharacterStartUpAbilities(StartUpGameplayAbilities);
+	AuraAsc->GiveCharacterStartUpAbilities(StartUpGameplayAbilities);
 }

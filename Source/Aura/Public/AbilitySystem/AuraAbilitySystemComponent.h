@@ -20,8 +20,8 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	void AbilityCharacterInfoSet();
 	
-	void GrantCharacterStartUpAbilities(const TArray<TSubclassOf<UAuraGameplayAbility>>& GameplayAbilities,
-		float AbilityLevel = 1.f);
+	void GiveCharacterStartUpAbilities(
+		const TArray<TSubclassOf<UAuraGameplayAbility>>& GameplayAbilities, float AbilityLevel = 1.f);
 	
 	FEffectAssetTags EffectAssetTagsDelegate;
 	

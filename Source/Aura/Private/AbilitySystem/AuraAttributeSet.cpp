@@ -195,6 +195,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				*Props.TargetAvatarActor->GetActorNameOrLabel(), GetHealth());
 			
 			const bool bIsFatal = NewHealth <= 0.f;
+			if (!bIsFatal)
+			{
+				FGameplayTagContainer Tags;
+				Tags.AddTag(AuraGameplayTags::Ability_HitReact);
+				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(Tags);
+			}
 		}
 	}
 }

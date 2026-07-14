@@ -7,6 +7,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "Game/AuraGameModeBase.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/Ability/AuraGameplayAbility.h"
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -75,4 +76,19 @@ void UAuraAbilitySystemLibrary::InitDefaultAttributesByLevel(const UObject* Worl
 	ApplyEffect(ClassDefaultInfo.PrimaryAttributes);
 	ApplyEffect(AuraGameMode->CharacterClassInfo->SecondaryAttributes);
 	ApplyEffect(AuraGameMode->CharacterClassInfo->VitalAttributes);
+}
+
+void UAuraAbilitySystemLibrary::GiveStartUpAbilities(
+	const UObject* WorldContextObject, UAbilitySystemComponent* AbilitySystemComponent)
+{
+	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!AuraGameMode || !AbilitySystemComponent) return;
+	
+	const UCharacterClassInfoConfig* CharacterClassInfoConfig = AuraGameMode->CharacterClassInfo;
+	for (const TSubclassOf<UAuraGameplayAbility>& AbilityClass : CharacterClassInfoConfig->SharedAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec(AbilityClass);
+		AbilitySpec.Level = 1.f;
+		AbilitySystemComponent->GiveAbility(AbilitySpec);
+	}
 }
