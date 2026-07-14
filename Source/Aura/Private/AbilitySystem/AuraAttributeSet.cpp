@@ -5,6 +5,7 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AuraGameplayTags.h"
+#include "Interaction/CombatInterface.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -187,19 +188,26 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		
 		if (LocalIncomingDamage > 0.f)
 		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+			const float NewHealth = FMath::Clamp(GetHealth() - LocalIncomingDamage, 0.f, GetMaxHealth());
+			SetHealth(NewHealth);
 			
 			UE_LOG(LogTemp, Warning,
 				TEXT("AvatarActorName: %s AvatarActorHealth: %f"),
 				*Props.TargetAvatarActor->GetActorNameOrLabel(), GetHealth());
 			
-			const bool bIsFatal = NewHealth <= 0.f;
-			if (!bIsFatal)
+			const bool bIsDead = NewHealth <= 0.f;
+			if (!bIsDead)
 			{
 				FGameplayTagContainer Tags;
 				Tags.AddTag(AuraGameplayTags::Ability_HitReact);
 				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(Tags);
+			}
+			else
+			{
+				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+				{
+					CombatInterface->Die();
+				}
 			}
 		}
 	}

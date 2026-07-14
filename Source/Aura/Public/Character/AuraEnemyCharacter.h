@@ -30,6 +30,7 @@ public:
 	
 	/** Combat Interface - Start **/
 	virtual int32 GetCharacterLevel() const override;
+	virtual void Die() override;
 	/** Combat Interface - End **/
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
@@ -55,6 +56,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float DefaultWalkSpeed = 250.f;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	float EnemyLifeSpan = 5.f;
 	
 	UFUNCTION() void OnRep_EnemyLevel(int32 OldEnemyLevel);
 	

@@ -108,6 +108,12 @@ int32 AAuraEnemyCharacter::GetCharacterLevel() const
 	return EnemyLevel;
 }
 
+void AAuraEnemyCharacter::Die()
+{
+	SetLifeSpan(EnemyLifeSpan);
+	Super::Die();
+}
+
 void AAuraEnemyCharacter::HighlightEnemy()
 {
 	GetMesh()->SetRenderCustomDepth(true);

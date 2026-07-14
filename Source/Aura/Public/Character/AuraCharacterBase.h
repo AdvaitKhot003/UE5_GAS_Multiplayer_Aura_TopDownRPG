@@ -37,7 +37,11 @@ public:
 	virtual FVector GetCombatSocketLocation() const override;
 	virtual void UpdateWarpTarget(const FVector& TargetLocation) const override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() const override;
+	virtual void Die() override;
 	/** Combat Interface - End **/
+	
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
